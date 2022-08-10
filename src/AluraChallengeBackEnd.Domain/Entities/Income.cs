@@ -6,6 +6,8 @@ public class Income : Entity
     public decimal Value { get; private set; }
     public DateTime DateIncome { get; private set; }
 
+    protected Income() { }
+
     public Income(string description,
                   decimal value, 
                   DateTime dateIncome) 

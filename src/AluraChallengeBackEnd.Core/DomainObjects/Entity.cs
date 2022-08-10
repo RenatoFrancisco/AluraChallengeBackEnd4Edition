@@ -8,7 +8,7 @@ public abstract class Entity
 
     public abstract void Validate();
 
-    public override bool Equals(object? obj)
+    public override bool Equals(object obj)
     {
         var compareTo = obj as Entity;
         if (ReferenceEquals(this, compareTo)) return true;

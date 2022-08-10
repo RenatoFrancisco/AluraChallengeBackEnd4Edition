@@ -6,6 +6,8 @@ public class Expenditure : Entity
     public decimal Value { get; private set; }
     public DateTime DateIncome { get; private set; }
 
+    protected Expenditure() { }
+
     public Expenditure(string description,
                   decimal value, 
                   DateTime dateIncome) 
