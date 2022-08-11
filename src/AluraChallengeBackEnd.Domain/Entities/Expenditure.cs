@@ -4,17 +4,17 @@ public class Expenditure : Entity
 {
     public string Description { get; private set; }
     public decimal Value { get; private set; }
-    public DateTime DateIncome { get; private set; }
+    public DateTime DateExpenditure { get; private set; }
 
     protected Expenditure() { }
 
     public Expenditure(string description,
                   decimal value, 
-                  DateTime dateIncome) 
+                  DateTime dateExpenditure) 
     {
         Description = description;
         Value = value;
-        DateIncome = dateIncome;
+        DateExpenditure = dateExpenditure;
 
         Validate();
     }

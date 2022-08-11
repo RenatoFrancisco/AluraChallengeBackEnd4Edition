@@ -5,3 +5,4 @@ global using AluraChallengeBackEnd.Data.Context;
 global using AluraChallengeBackEnd.Domain.Entities;
 global using AluraChallengeBackEnd.Domain.Interfaces;
 global using AluraChallengeBackEnd.Core.DomainObjects;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
