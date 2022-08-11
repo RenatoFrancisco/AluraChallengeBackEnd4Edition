@@ -6,4 +6,9 @@ public class AppDbContext : DbContext
     public DbSet<Expenditure> Expenditures { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+    }
 }
