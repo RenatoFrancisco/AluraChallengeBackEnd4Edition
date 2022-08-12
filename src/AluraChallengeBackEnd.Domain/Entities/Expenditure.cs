@@ -5,6 +5,7 @@ public class Expenditure : Entity
     public string Description { get; private set; }
     public decimal Value { get; private set; }
     public DateTime DateExpenditure { get; private set; }
+    public DateTime CreatedOn { get; private set; }
 
     protected Expenditure() { }
 
@@ -15,7 +16,8 @@ public class Expenditure : Entity
         Description = description;
         Value = value;
         DateExpenditure = dateExpenditure;
-
+        CreatedOn = DateTime.Now;
+        
         Validate();
     }
     

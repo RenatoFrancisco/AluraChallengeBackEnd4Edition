@@ -5,6 +5,7 @@ public class Income : Entity
     public string Description { get; private set; }
     public decimal Value { get; private set; }
     public DateTime DateIncome { get; private set; }
+    public DateTime CreatedOn { get; private set; }
 
     protected Income() { }
 
@@ -15,6 +16,7 @@ public class Income : Entity
         Description = description;
         Value = value;
         DateIncome = dateIncome;
+        CreatedOn = DateTime.Now;
 
         Validate();
     }
