@@ -14,6 +14,7 @@ public class IncomeConfiguration : IEntityTypeConfiguration<Income>
             .IsRequired();
 
         builder.Property(p => p.DateIncome)
+            .HasColumnType("Date")
             .IsRequired();
     }
 }

@@ -14,6 +14,7 @@ public class ExpenditureConfiguration : IEntityTypeConfiguration<Expenditure>
             .IsRequired();
 
         builder.Property(p => p.DateExpenditure)
+            .HasColumnType("Date")
             .IsRequired();
     }
 }
