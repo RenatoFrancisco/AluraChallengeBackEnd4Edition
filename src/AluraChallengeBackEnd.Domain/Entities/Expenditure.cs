@@ -16,7 +16,6 @@ public class Expenditure : Entity
         Description = description;
         Value = value;
         DateExpenditure = dateExpenditure;
-        CreatedOn = DateTime.Now;
         
         Validate();
     }

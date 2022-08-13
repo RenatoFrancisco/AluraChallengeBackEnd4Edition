@@ -16,7 +16,6 @@ public class Income : Entity
         Description = description;
         Value = value;
         DateIncome = dateIncome;
-        CreatedOn = DateTime.Now;
 
         Validate();
     }

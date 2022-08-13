@@ -5,7 +5,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
     protected readonly AppDbContext Db;
     protected readonly DbSet<TEntity> DbSet;
 
-    public IUnitOfWork UnitOfWork { get; }
+    public IUnitOfWork UnitOfWork => Db;
 
     public Repository(AppDbContext db)
     {
@@ -13,7 +13,8 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
         DbSet = Db.Set<TEntity>();
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync() => await DbSet.ToListAsync();
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync() =>
+        await DbSet.AsNoTrackingWithIdentityResolution().ToListAsync();
 
     public virtual async Task<TEntity> GetAsync(Guid id) => await DbSet.FindAsync(id);
 
@@ -24,7 +25,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
     public virtual void Delete(Guid id) => Db.Remove(id);
 
     public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate) => 
-        await DbSet.AsNoTracking().Where(predicate).ToListAsync();
+        await DbSet.AsNoTrackingWithIdentityResolution().Where(predicate).ToListAsync();
 
     public void Dispose() => Db?.Dispose();
 }
