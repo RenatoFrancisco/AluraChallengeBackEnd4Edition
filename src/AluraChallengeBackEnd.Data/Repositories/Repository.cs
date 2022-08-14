@@ -20,9 +20,9 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
 
     public virtual void Save(TEntity entity) =>  DbSet.AddAsync(entity);
 
-    public virtual void Edit(TEntity entity) => Db.Entry(entity).State = EntityState.Modified;
+    public virtual void Edit(TEntity entity) => Db.Update(entity);
 
-    public virtual void Delete(Guid id) => Db.Remove(id);
+    public virtual void Delete(TEntity entity) => Db.Remove(entity);
 
     public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate) => 
         await DbSet.AsNoTrackingWithIdentityResolution().Where(predicate).ToListAsync();
