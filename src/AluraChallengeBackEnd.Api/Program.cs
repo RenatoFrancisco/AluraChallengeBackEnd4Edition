@@ -6,7 +6,7 @@ builder.Services.AddSwaggerGen();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddDbContext<AppDbContext>((provider, options) => 
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IIncomeRepository, IncomeRepository>();
 var app = builder.Build();
 
