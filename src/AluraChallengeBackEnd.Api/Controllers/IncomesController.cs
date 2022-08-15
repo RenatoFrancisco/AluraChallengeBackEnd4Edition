@@ -27,14 +27,15 @@ public class IncomesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Income>> Save(IncomeViewModel incomeViewModel)
+    public async Task<ActionResult<IncomeViewModel>> Save(IncomeViewModel incomeViewModel)
     {
         if (!ModelState.IsValid) return BadRequest();
-
-        _incomeRepository.Save(_mapper.Map<Income>(incomeViewModel));
+        
+        var income = _mapper.Map<Income>(incomeViewModel);
+        _incomeRepository.Save(income);
         await CommitAsync();
 
-        return Ok(incomeViewModel);
+        return CreatedAtAction(nameof(Get), new { Id = income.Id }, _mapper.Map<IncomeViewModel>(income));
     }
 
     [HttpPut("{id:Guid}")]

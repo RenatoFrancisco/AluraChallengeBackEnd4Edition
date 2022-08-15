@@ -31,10 +31,11 @@ public class ExpendituresController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest();
 
-        _expenditureRepository.Save(_mapper.Map<Expenditure>(expenditureViewModel));
+        var expenditure = _mapper.Map<Expenditure>(expenditureViewModel);
+        _expenditureRepository.Save(expenditure);
         await CommitAsync();
 
-        return Ok(expenditureViewModel);
+        return CreatedAtAction(nameof(Get), new { Id = expenditure.Id }, _mapper.Map<ExpenditureViewModel>(expenditure));
     }
 
     [HttpPut("{id:Guid}")]
