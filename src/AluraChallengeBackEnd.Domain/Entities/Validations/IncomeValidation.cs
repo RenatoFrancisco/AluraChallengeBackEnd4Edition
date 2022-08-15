@@ -6,12 +6,12 @@ public class IncomeValidation : AbstractValidator<Income>
     {
         RuleFor(i => i.Description)
             .NotEmpty()
-            .WithMessage("The {PropertyName} field is required")
+            .WithMessage("The field {PropertyName} is required")
             .Length(3, 100)
-            .WithMessage("The {PropertyName} field must contain between {MinLength} and {MaxLength} caracteres");;
+            .WithMessage("The field {PropertyName} must contain between {MinLength} and {MaxLength} caracteres");;
 
         RuleFor(i => i.Value)
             .GreaterThanOrEqualTo(1)
-            .WithMessage("The {PropertyName} must be greater then {ComparisonValue}");
+            .WithMessage("The field {PropertyName} must be greater then {ComparisonValue}");
     }
 }
