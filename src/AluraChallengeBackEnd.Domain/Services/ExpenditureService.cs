@@ -10,7 +10,7 @@ public class ExpenditureService : ServiceBase, IExpenditureService
     public async Task<bool> SaveAsync(Expenditure expenditure)
     {
         if (!await ExecuteValidations(expenditure)) return false;
-        _expenditureRepository.Save(expenditure);
+        _expenditureRepository.Create(expenditure);
         return await CommitAsync();
     }
 

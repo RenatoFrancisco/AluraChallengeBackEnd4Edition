@@ -10,7 +10,7 @@ public class IncomeService : ServiceBase, IIncomeService
     public async Task<bool> SaveAsync(Income income)
     {
         if (!await ExecuteValidations(income)) return false;
-        _incomeRepository.Save(income);
+        _incomeRepository.Create(income);
         return await CommitAsync();
     }
 
