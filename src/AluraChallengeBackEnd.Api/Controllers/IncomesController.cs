@@ -1,41 +1,44 @@
 namespace AluraChallengeBackEnd.Api.Controllers;
 
-[ApiController]
 [Route("api/[controller]")]
-public class IncomesController : ControllerBase
+public class IncomesController : MainController
 {
+    private readonly IIncomeService _incomeService;
     private readonly IIncomeRepository _incomeRepository;
     private readonly IMapper _mapper;
 
-    public IncomesController(IIncomeRepository incomeRepository, IMapper mapper)
+    public IncomesController(IIncomeService incomeService,
+                             IIncomeRepository incomeRepository, 
+                             IMapper mapper, 
+                             INotifier notifier) : base(notifier)
     {
+        _incomeService = incomeService;
         _incomeRepository =  incomeRepository;
         _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<IncomeViewModel>> GetAll() =>
-         _mapper.Map<IEnumerable<IncomeViewModel>>(await _incomeRepository.GetAllAsync());
-
+    public async Task<ActionResult<IEnumerable<IncomeViewModel>>> GetAll() =>
+         CustomResponse(_mapper.Map<IEnumerable<IncomeViewModel>>(await _incomeRepository.GetAllAsync()));
+ 
     [HttpGet("{id:Guid}")]
     public async Task<ActionResult<IncomeViewModel>> Get(Guid id)
     {
         var incomeViewModel = _mapper.Map<IncomeViewModel>(await _incomeRepository.GetAsync(id));
         if (incomeViewModel is null) return NotFound();
 
-        return incomeViewModel;
+        return CustomResponse(incomeViewModel);
     }
 
     [HttpPost]
     public async Task<ActionResult<IncomeViewModel>> Save(IncomeViewModel incomeViewModel)
     {
-        if (!ModelState.IsValid) return BadRequest();
+        if (!ModelState.IsValid) return CustomResponse(ModelState);
         
         var income = _mapper.Map<Income>(incomeViewModel);
-        _incomeRepository.Save(income);
-        await CommitAsync();
+        await _incomeService.SaveAsync(income);
 
-        return CreatedAtAction(nameof(Get), new { Id = income.Id }, _mapper.Map<IncomeViewModel>(income));
+        return CustomResponse(_mapper.Map<IncomeViewModel>(income), HttpStatusCode.Created);
     }
 
     [HttpPut("{id:Guid}")]
@@ -43,25 +46,22 @@ public class IncomesController : ControllerBase
     {
         if (id != incomeViewModel.Id) return BadRequest();
 
-        if (!ModelState.IsValid) return BadRequest();
+        if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-       _incomeRepository.Edit(_mapper.Map<Income>(incomeViewModel));
-       await CommitAsync();
+       await _incomeService.EditAsync(_mapper.Map<Income>(incomeViewModel));
 
-       return Ok(incomeViewModel);
+       return CustomResponse(incomeViewModel);
     }
 
     [HttpDelete("{id:Guid}")]
-    public async Task<ActionResult> Delete(Guid id)
+    public async Task<ActionResult<IncomeViewModel>> Delete(Guid id)
     {
         var incomeFromDb = await _incomeRepository.GetAsync(id);
         if (incomeFromDb is null) return NotFound();
 
         _incomeRepository.Delete(incomeFromDb);
-        await CommitAsync();
+        await _incomeRepository.UnitOfWork.CommitAsync();
         
-        return Ok();
-    }
-
-    private async Task<bool> CommitAsync() => await _incomeRepository.UnitOfWork.CommitAsync();
+        return CustomResponse(_mapper.Map<IncomeViewModel>(incomeFromDb));
+    }  
 }

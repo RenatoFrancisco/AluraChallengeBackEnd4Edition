@@ -7,18 +7,18 @@ public class IncomeService : ServiceBase, IIncomeService
     public IncomeService(IIncomeRepository incomeRepository, INotifier notifier) : base(notifier) =>
          _incomeRepository = incomeRepository;
 
-    public async Task<bool> Save(Income income)
+    public async Task<bool> SaveAsync(Income income)
     {
         if (!await ExecuteValidations(income)) return false;
         _incomeRepository.Save(income);
-        return true;
+        return await CommitAsync();
     }
 
-    public async Task<bool> Edit(Income income)
+    public async Task<bool> EditAsync(Income income)
     {
         if (!await ExecuteValidations(income)) return false;
         _incomeRepository.Edit(income);
-        return true;
+        return await CommitAsync();
     }
 
     private async Task<bool> ExecuteValidations(Income income)
@@ -36,4 +36,6 @@ public class IncomeService : ServiceBase, IIncomeService
 
     private async Task<bool> Exists(string description, int month) =>
         (await _incomeRepository.GetByDescriptionAndMonth(description, month)).Any();
+    
+    private async Task<bool> CommitAsync() => await _incomeRepository.UnitOfWork.CommitAsync();
 }

@@ -1,21 +1,25 @@
 namespace AluraChallengeBackEnd.Api.Controllers;
 
-[ApiController]
 [Route("api/[controller]")]
-public class ExpendituresController : ControllerBase
+public class ExpendituresController : MainController
 {
+    private readonly IExpenditureService _expenditureService;
     private readonly IExpenditureRepository _expenditureRepository;
     private readonly IMapper _mapper;
 
-    public ExpendituresController(IExpenditureRepository expenditureRepository, IMapper mapper)
+    public ExpendituresController(IExpenditureService expenditureService,
+                                 IExpenditureRepository expenditureRepository, 
+                                 IMapper mapper, 
+                                 INotifier notifier) : base(notifier)
     {
+        _expenditureService = expenditureService;
         _expenditureRepository = expenditureRepository;
         _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<ExpenditureViewModel>> GetAll() =>
-        _mapper.Map<IEnumerable<ExpenditureViewModel>>(await _expenditureRepository.GetAllAsync());
+    public async Task<ActionResult<IEnumerable<ExpenditureViewModel>>> GetAll() =>
+        CustomResponse(_mapper.Map<IEnumerable<ExpenditureViewModel>>(await _expenditureRepository.GetAllAsync()));
 
     [HttpGet("{id:Guid}")]
     public async Task<ActionResult<ExpenditureViewModel>> Get(Guid id)
@@ -23,19 +27,18 @@ public class ExpendituresController : ControllerBase
         var expenditureViewModel = _mapper.Map<ExpenditureViewModel>(await _expenditureRepository.GetAsync(id));
         if (expenditureViewModel is null) NotFound();
 
-        return Ok(expenditureViewModel);
+        return CustomResponse(expenditureViewModel);
     }
 
     [HttpPost]
     public async Task<ActionResult<ExpenditureViewModel>> Save(ExpenditureViewModel expenditureViewModel)
     {
-        if (!ModelState.IsValid) return BadRequest();
+        if (!ModelState.IsValid) return CustomResponse(ModelState);
 
         var expenditure = _mapper.Map<Expenditure>(expenditureViewModel);
-        _expenditureRepository.Save(expenditure);
-        await CommitAsync();
+        await _expenditureService.SaveAsync(expenditure);
 
-        return CreatedAtAction(nameof(Get), new { Id = expenditure.Id }, _mapper.Map<ExpenditureViewModel>(expenditure));
+        return CustomResponse(_mapper.Map<ExpenditureViewModel>(expenditure), HttpStatusCode.Created);
     }
 
     [HttpPut("{id:Guid}")]
@@ -43,25 +46,22 @@ public class ExpendituresController : ControllerBase
     {
         if (id != expenditureViewModel.Id) return BadRequest();
 
-        if (!ModelState.IsValid) return BadRequest();
+        if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-        _expenditureRepository.Edit(_mapper.Map<Expenditure>(expenditureViewModel));
-        await CommitAsync();
+        await _expenditureService.EditAsync(_mapper.Map<Expenditure>(expenditureViewModel));
 
-        return Ok(expenditureViewModel);
+        return CustomResponse(expenditureViewModel);
     }
 
     [HttpDelete("{id:Guid}")]
-    public async Task<ActionResult> Delete(Guid id)
+    public async Task<ActionResult<ExpenditureViewModel>> Delete(Guid id)
     {
         var expenditureFromDb = await _expenditureRepository.GetAsync(id);
         if (expenditureFromDb is null) return NotFound();
 
         _expenditureRepository.Delete(expenditureFromDb);
-        await CommitAsync();
+        await _expenditureRepository.UnitOfWork.CommitAsync();
         
-        return Ok();
+        return CustomResponse(_mapper.Map<ExpenditureViewModel>(expenditureFromDb));
     }
-
-    private async Task<bool> CommitAsync() => await _expenditureRepository.UnitOfWork.CommitAsync();
 }

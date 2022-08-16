@@ -7,18 +7,18 @@ public class ExpenditureService : ServiceBase, IExpenditureService
     public ExpenditureService(IExpenditureRepository expenditureRepository, INotifier notifier) : base(notifier) =>
         _expenditureRepository = expenditureRepository;
 
-    public async Task<bool> Edit(Expenditure Expenditure)
+    public async Task<bool> SaveAsync(Expenditure expenditure)
     {
-        if (!await ExecuteValidations(Expenditure)) return false;
-        _expenditureRepository.Save(Expenditure);
-        return true;
+        if (!await ExecuteValidations(expenditure)) return false;
+        _expenditureRepository.Save(expenditure);
+        return await CommitAsync();
     }
 
-    public async Task<bool> Save(Expenditure Expenditure)
+    public async Task<bool> EditAsync(Expenditure expenditure)
     {
-        if (!await ExecuteValidations(Expenditure)) return false;
-        _expenditureRepository.Edit(Expenditure);
-        return true;
+        if (!await ExecuteValidations(expenditure)) return false;
+        _expenditureRepository.Edit(expenditure);
+        return await CommitAsync();
     }
 
     private async Task<bool> ExecuteValidations(Expenditure expenditure)
@@ -36,4 +36,6 @@ public class ExpenditureService : ServiceBase, IExpenditureService
 
     private async Task<bool> Exists(string description, int month) => 
         (await _expenditureRepository.GetByDescriptionAndMonth(description, month)).Any();
+
+    private async Task<bool> CommitAsync() => await _expenditureRepository.UnitOfWork.CommitAsync();
 }

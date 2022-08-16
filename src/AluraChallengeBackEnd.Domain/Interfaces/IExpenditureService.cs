@@ -2,7 +2,7 @@ namespace AluraChallengeBackEnd.Domain.Interfaces
 {
     public interface IExpenditureService
     {
-        Task<bool> Save(Expenditure Expenditure);
-        Task<bool> Edit(Expenditure Expenditure);    
+        Task<bool> SaveAsync(Expenditure Expenditure);
+        Task<bool> EditAsync(Expenditure Expenditure);    
     }
 }

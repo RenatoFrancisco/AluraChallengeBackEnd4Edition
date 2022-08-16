@@ -1,9 +1,13 @@
 global using AutoMapper;
+global using System.Net;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
 global using AluraChallengeBackEnd.Data.Context;
 global using AluraChallengeBackEnd.Api.ViewModels;
 global using System.ComponentModel.DataAnnotations;
 global using AluraChallengeBackEnd.Domain.Entities;
+global using Microsoft.AspNetCore.Mvc.ModelBinding;
+global using AluraChallengeBackEnd.Domain.Services;
 global using AluraChallengeBackEnd.Data.Repositories;
 global using AluraChallengeBackEnd.Domain.Interfaces;
+global using AluraChallengeBackEnd.Domain.Notifications;

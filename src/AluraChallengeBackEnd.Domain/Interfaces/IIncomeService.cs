@@ -2,6 +2,6 @@ namespace AluraChallengeBackEnd.Domain.Interfaces;
 
 public interface IIncomeService
 {
-    Task<bool> Save(Income income);
-    Task<bool> Edit(Income income);
+    Task<bool> SaveAsync(Income income);
+    Task<bool> EditAsync(Income income);
 }
