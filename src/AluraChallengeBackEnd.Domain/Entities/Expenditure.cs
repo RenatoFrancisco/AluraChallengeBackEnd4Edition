@@ -7,6 +7,9 @@ public class Expenditure : Entity
     public DateTime DateExpenditure { get; private set; }
     public DateTime CreatedOn { get; private set; }
 
+    public Guid CategoryExpenditureId { get; set; }
+    public CategoryExpenditure CategoryExpenditure { get; set; }
+
     protected Expenditure() { }
 
     public Expenditure(string description,

@@ -1,4 +1,3 @@
-
 namespace AluraChallengeBackEnd.Data.Configurations;
 
 public class ExpenditureConfiguration : IEntityTypeConfiguration<Expenditure>
@@ -16,5 +15,10 @@ public class ExpenditureConfiguration : IEntityTypeConfiguration<Expenditure>
         builder.Property(p => p.DateExpenditure)
             .HasColumnType("Date")
             .IsRequired();
+        
+        builder.HasOne(e => e.CategoryExpenditure)
+            .WithMany(c => c.Expenditures);
+
+        builder.Navigation(e => e.CategoryExpenditure).AutoInclude();
     }
 }

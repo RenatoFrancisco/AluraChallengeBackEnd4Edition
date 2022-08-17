@@ -4,6 +4,7 @@ public class AppDbContext : DbContext, IUnitOfWork
 {
     public DbSet<Income> Incomes { get; set; }
     public DbSet<Expenditure> Expenditures { get; set; }
+    public DbSet<CategoryExpenditure> CategoriesExpenditure { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
