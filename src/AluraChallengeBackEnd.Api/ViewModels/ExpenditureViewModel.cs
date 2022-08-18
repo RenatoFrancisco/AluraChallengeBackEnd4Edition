@@ -14,4 +14,6 @@ public class ExpenditureViewModel
 
     [Required(ErrorMessage = "The field {0} is required")]
     public DateTime DateExpenditure { get; set; }
+    
+    public string? Category { get; set; }
 }

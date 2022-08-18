@@ -14,7 +14,7 @@ public class ExpenditureValidation : AbstractValidator<Expenditure>
             .GreaterThanOrEqualTo(1)
             .WithMessage("The field {PropertyName} must be greater then {ComparisonValue}");
 
-        RuleFor(e => e.Id)
+        RuleFor(e => e.CategoryExpenditureId)
             .NotEmpty()
             .WithMessage("The field {PropertyName} cannot be empty");
 

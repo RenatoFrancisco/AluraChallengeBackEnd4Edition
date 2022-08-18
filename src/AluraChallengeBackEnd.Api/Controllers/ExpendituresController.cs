@@ -25,7 +25,7 @@ public class ExpendituresController : MainController
     public async Task<ActionResult<ExpenditureViewModel>> Get(Guid id)
     {
         var expenditureViewModel = _mapper.Map<ExpenditureViewModel>(await _expenditureRepository.GetAsync(id));
-        if (expenditureViewModel is null) NotFound();
+        if (expenditureViewModel is null) return NotFound();
 
         return CustomResponse(expenditureViewModel);
     }
@@ -36,7 +36,7 @@ public class ExpendituresController : MainController
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
         var expenditure = _mapper.Map<Expenditure>(expenditureViewModel);
-        await _expenditureService.SaveAsync(expenditure);
+        await _expenditureService.CreateAsync(expenditure);
 
         return CustomResponse(_mapper.Map<ExpenditureViewModel>(expenditure), HttpStatusCode.Created);
     }
@@ -48,9 +48,10 @@ public class ExpendituresController : MainController
 
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-        await _expenditureService.EditAsync(_mapper.Map<Expenditure>(expenditureViewModel));
+        var expenditure = _mapper.Map<Expenditure>(expenditureViewModel);
+        await _expenditureService.EditAsync(expenditure);
 
-        return CustomResponse(expenditureViewModel);
+        return CustomResponse(_mapper.Map<ExpenditureViewModel>(expenditure));
     }
 
     [HttpDelete("{id:Guid}")]

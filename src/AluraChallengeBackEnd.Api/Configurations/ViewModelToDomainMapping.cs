@@ -8,6 +8,6 @@ public class ViewModelToDomainMapping : Profile
             .ConstructUsing(vm => new Income(vm.Description, vm.Value, vm.DateIncome));
 
         CreateMap<ExpenditureViewModel, Expenditure>()
-            .ConstructUsing(vm => new Expenditure(vm.Description, vm.Value, vm.DateExpenditure));
+            .ConstructUsing(vm => new Expenditure(vm.Description, vm.Value, vm.DateExpenditure, vm.Category));
     }       
 }

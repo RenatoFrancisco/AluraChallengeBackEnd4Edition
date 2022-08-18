@@ -36,7 +36,7 @@ public class IncomesController : MainController
         if (!ModelState.IsValid) return CustomResponse(ModelState);
         
         var income = _mapper.Map<Income>(incomeViewModel);
-        await _incomeService.SaveAsync(income);
+        await _incomeService.CreateAsync(income);
 
         return CustomResponse(_mapper.Map<IncomeViewModel>(income), HttpStatusCode.Created);
     }

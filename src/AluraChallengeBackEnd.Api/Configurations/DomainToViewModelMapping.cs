@@ -5,6 +5,7 @@ public class DomainToViewModelMapping : Profile
     public DomainToViewModelMapping()
     {
         CreateMap<Income, IncomeViewModel>();
-        CreateMap<Expenditure, ExpenditureViewModel>();
+        CreateMap<Expenditure, ExpenditureViewModel>()
+            .ForMember(vm => vm.Category, e => e.MapFrom(e => e.CategoryExpenditure.Description));
     }
 }

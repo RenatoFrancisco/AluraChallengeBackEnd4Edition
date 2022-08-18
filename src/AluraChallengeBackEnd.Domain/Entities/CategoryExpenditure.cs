@@ -3,7 +3,7 @@ public class CategoryExpenditure : Entity
 {
     public string Description { get; init; }
 
-    public ICollection<Expenditure> Expenditures { get; set; } = new List<Expenditure>();
+    public ICollection<Expenditure> Expenditures { get; private set; } = new List<Expenditure>();
 
     protected CategoryExpenditure() { }
 
@@ -12,6 +12,8 @@ public class CategoryExpenditure : Entity
         Description = description;
         Validate();
     }
+
+    public void AddExpenditure(Expenditure expenditure) => Expenditures.Add(expenditure);
 
     public override void Validate()
     {

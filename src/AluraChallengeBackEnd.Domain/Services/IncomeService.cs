@@ -7,7 +7,7 @@ public class IncomeService : ServiceBase, IIncomeService
     public IncomeService(IIncomeRepository incomeRepository, INotifier notifier) : base(notifier) =>
          _incomeRepository = incomeRepository;
 
-    public async Task<bool> SaveAsync(Income income)
+    public async Task<bool> CreateAsync(Income income)
     {
         if (!await ExecuteValidations(income)) return false;
         _incomeRepository.Create(income);

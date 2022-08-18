@@ -7,22 +7,34 @@ public class Expenditure : Entity
     public DateTime DateExpenditure { get; private set; }
     public DateTime CreatedOn { get; private set; }
 
-    public Guid CategoryExpenditureId { get; set; }
-    public CategoryExpenditure CategoryExpenditure { get; set; }
+    public Guid CategoryExpenditureId { get; private set; }
+    public CategoryExpenditure CategoryExpenditure { get; private set; }
 
     protected Expenditure() { }
 
     public Expenditure(string description,
                   decimal value, 
-                  DateTime dateExpenditure) 
+                  DateTime dateExpenditure,
+                  string category) 
     {
         Description = description;
         Value = value;
         DateExpenditure = dateExpenditure;
-        
+        CategoryExpenditure = new CategoryExpenditure(GetCategoryOrDefault(category));
+        CategoryExpenditureId = CategoryExpenditure.Id;
+
         Validate();
     }
     
+    public void SetCategoryExpenditure(CategoryExpenditure category)
+    {
+        CategoryExpenditure = category;
+        CategoryExpenditureId = category.Id;
+        CategoryExpenditure.AddExpenditure(this);
+    }
+
+    public string GetCategoryOrDefault() => GetCategoryOrDefault(CategoryExpenditure.Description);
+
     public override void Validate()
     {
         var validation = new ExpenditureValidation().Validate(this);
@@ -32,4 +44,9 @@ public class Expenditure : Entity
             throw new DomainException(errors);
         }
     }
+
+    private string GetCategoryOrDefault(string category) =>
+        string.IsNullOrWhiteSpace(category)
+        ? "Outras"
+        : category;
 }
