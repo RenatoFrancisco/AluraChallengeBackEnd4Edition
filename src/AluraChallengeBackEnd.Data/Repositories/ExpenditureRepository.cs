@@ -9,4 +9,7 @@ public class ExpenditureRepository : Repository<Expenditure>, IExpenditureReposi
 
     public Task<CategoryExpenditure> GetCategoryByDescriptionAsync(string description) =>
         Db.CategoriesExpenditure.FirstOrDefaultAsync(c => c.Description == description);
+
+    public async Task<Expenditure> GetByDescriptionAsync(string description) =>
+        (await FindAsync(e => e.Description == description)).FirstOrDefault();
 }

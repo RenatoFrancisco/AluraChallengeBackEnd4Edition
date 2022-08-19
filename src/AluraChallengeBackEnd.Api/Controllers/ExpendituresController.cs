@@ -18,8 +18,16 @@ public class ExpendituresController : MainController
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ExpenditureViewModel>>> GetAll() =>
-        CustomResponse(_mapper.Map<IEnumerable<ExpenditureViewModel>>(await _expenditureRepository.GetAllAsync()));
+    public async Task<ActionResult<IEnumerable<ExpenditureViewModel>>> GetAll(string? description = null) 
+    {
+        if (string.IsNullOrWhiteSpace(description))
+            return CustomResponse(_mapper.Map<IEnumerable<ExpenditureViewModel>>(await _expenditureRepository.GetAllAsync()));
+
+        var expenditureViewModel = _mapper.Map<ExpenditureViewModel>(await _expenditureRepository.GetByDescriptionAsync(description));
+        if (expenditureViewModel is null) return NotFound();
+
+        return CustomResponse(expenditureViewModel);
+    }
 
     [HttpGet("{id:Guid}")]
     public async Task<ActionResult<ExpenditureViewModel>> Get(Guid id)
