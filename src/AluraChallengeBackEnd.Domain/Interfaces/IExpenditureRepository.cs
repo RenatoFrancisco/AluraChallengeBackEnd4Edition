@@ -7,4 +7,6 @@ public interface IExpenditureRepository : IRepository<Expenditure>
     Task<CategoryExpenditure> GetCategoryByDescriptionAsync(string description);
 
     Task<Expenditure> GetByDescriptionAsync(string description);
+
+    Task<IEnumerable<Expenditure>> GetByYearAndMonthAsync(int year, int month);
 }

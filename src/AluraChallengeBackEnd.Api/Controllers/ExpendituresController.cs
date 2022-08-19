@@ -38,6 +38,10 @@ public class ExpendituresController : MainController
         return CustomResponse(expenditureViewModel);
     }
 
+    [HttpGet("{year:int}/{month:int}")]
+    public async Task<ActionResult<IEnumerable<ExpenditureViewModel>>> GetByYearAndMonth(int year, int month) =>
+        CustomResponse(_mapper.Map<IEnumerable<ExpenditureViewModel>>(await _expenditureRepository.GetByYearAndMonthAsync(year, month)));
+
     [HttpPost]
     public async Task<ActionResult<ExpenditureViewModel>> Save(ExpenditureViewModel expenditureViewModel)
     {

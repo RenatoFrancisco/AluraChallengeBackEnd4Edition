@@ -12,4 +12,7 @@ public class ExpenditureRepository : Repository<Expenditure>, IExpenditureReposi
 
     public async Task<Expenditure> GetByDescriptionAsync(string description) =>
         (await FindAsync(e => e.Description == description)).FirstOrDefault();
+
+    public async Task<IEnumerable<Expenditure>> GetByYearAndMonthAsync(int year, int month) =>
+        await FindAsync(e => e.DateExpenditure.Year == year && e.DateExpenditure.Month == month);
 }
