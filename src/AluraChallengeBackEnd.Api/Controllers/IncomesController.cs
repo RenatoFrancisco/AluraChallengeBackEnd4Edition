@@ -38,6 +38,11 @@ public class IncomesController : MainController
         return CustomResponse(incomeViewModel);
     }
 
+
+    [HttpGet("{year:int}/{month:int}")]
+    public async Task<ActionResult<IEnumerable<IncomeViewModel>>> GetByYearAndMonth(int year, int month) =>
+        CustomResponse(_mapper.Map<IEnumerable<IncomeViewModel>>(await _incomeRepository.GetByYearAndMonthAsync(year, month)));
+
     [HttpPost]
     public async Task<ActionResult<IncomeViewModel>> Save(IncomeViewModel incomeViewModel)
     {
