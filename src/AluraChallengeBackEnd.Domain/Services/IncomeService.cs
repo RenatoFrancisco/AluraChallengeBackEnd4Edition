@@ -35,7 +35,7 @@ public class IncomeService : ServiceBase, IIncomeService
     }
 
     private async Task<bool> Exists(string description, int month) =>
-        (await _incomeRepository.GetByDescriptionAndMonth(description, month)).Any();
+        (await _incomeRepository.GetByDescriptionAndMonthAsync(description, month)).Any();
     
     private async Task<bool> CommitAsync() => await _incomeRepository.UnitOfWork.CommitAsync();
 }

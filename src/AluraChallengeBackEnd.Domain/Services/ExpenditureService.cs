@@ -43,7 +43,7 @@ public class ExpenditureService : ServiceBase, IExpenditureService
     }
 
     private async Task<bool> Exists(string description, int month) => 
-        (await _expenditureRepository.GetByDescriptionAndMonth(description, month)).Any();
+        (await _expenditureRepository.GetByDescriptionAndMonthAsync(description, month)).Any();
 
 
     private async Task<bool> SetCategory(Expenditure expenditure)

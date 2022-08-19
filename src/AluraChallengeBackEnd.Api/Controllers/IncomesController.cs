@@ -18,8 +18,16 @@ public class IncomesController : MainController
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<IncomeViewModel>>> GetAll() =>
-         CustomResponse(_mapper.Map<IEnumerable<IncomeViewModel>>(await _incomeRepository.GetAllAsync()));
+    public async Task<ActionResult<IEnumerable<IncomeViewModel>>> GetAll(string? description = null)
+    {
+        if (string.IsNullOrWhiteSpace(description))
+            return  CustomResponse(_mapper.Map<IEnumerable<IncomeViewModel>>(await _incomeRepository.GetAllAsync()));
+
+        var incomeViewModel = _mapper.Map<IncomeViewModel>(await _incomeRepository.GetByDescriptionAsync(description));
+        if (incomeViewModel is null) return NotFound();
+
+        return CustomResponse(incomeViewModel);
+    }
  
     [HttpGet("{id:Guid}")]
     public async Task<ActionResult<IncomeViewModel>> Get(Guid id)
