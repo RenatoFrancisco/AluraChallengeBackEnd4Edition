@@ -11,6 +11,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<INotifier, Notifier>();
 builder.Services.AddScoped<IIncomeService, IncomeService>();
 builder.Services.AddScoped<IExpenditureService, ExpenditureService>();
+builder.Services.AddScoped<ISummaryService, SummaryService>();
 builder.Services.AddScoped<IIncomeRepository, IncomeRepository>();
 builder.Services.AddScoped<IExpenditureRepository, ExpenditureRepository>();
 var app = builder.Build();
