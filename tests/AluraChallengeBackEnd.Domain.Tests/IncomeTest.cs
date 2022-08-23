@@ -2,7 +2,7 @@ namespace AluraChallengeBackEnd.Domain.Tests;
 public class IncomeTest
 {
     [Fact]
-    public void CreateIncome_WhenValid_DoesNotThrowsDomainException()
+    public void CreateIncome_WhenValid_DoesNotThrowDomainException()
     {
         // Arrange & Act
         var domainException = Record.Exception(() => new Income("Salary", 1200.0m, DateTime.Now));
@@ -21,5 +21,21 @@ public class IncomeTest
 
         // Assert
         Assert.NotEmpty(errors);
+    }
+
+    [Fact]
+    public void AddExpenditure()
+    {
+        // Arrange
+        const string description = "Moradia";
+        var category = new CategoryExpenditure(description);
+        var expenditure = new Expenditure("Aluguel", 2500.0m, DateTime.Now, description);
+
+        // Act
+        category.AddExpenditure(expenditure);
+
+        // Assert
+        Assert.Equal(1, category.Expenditures.Count);
+        Assert.Equal(expenditure, category.Expenditures.First());
     }
 }

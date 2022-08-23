@@ -1,8 +1,9 @@
 namespace AluraChallengeBackEnd.Domain.Tests;
+
 public class ExpenditureTest
 {
     [Fact]
-    public void CreateExpenditure_WhenValid_DoesNotThrowsDomainException()
+    public void CreateExpenditure_WhenValid_DoesNotThrowDomainException()
     {
         // Assert & Act
         var domainException = Record.Exception(() => new Expenditure("Aluguel", 2500.0m, DateTime.Now, "Moradia"));
@@ -55,7 +56,7 @@ public class ExpenditureTest
     }
 
     [Fact]
-    public void CGetCategoryOrDefault_WhenCategoryIsNull_MustReturnsOutras()
+    public void GetCategoryOrDefault_WhenCategoryIsNull_MustReturnOutras()
     {
         // Arrange
         var expenditure = new Expenditure("Sindicato", 50.0m, DateTime.Now, null);
@@ -68,7 +69,7 @@ public class ExpenditureTest
     }
 
     [Fact]
-    public void CGetCategoryOrDefault_WhenCategoryIsEmpty_MustReturnsOutras()
+    public void GetCategoryOrDefault_WhenCategoryIsEmpty_MustReturnOutras()
     {
         // Arrange
         var expenditure = new Expenditure("Sindicato", 50.0m, DateTime.Now, string.Empty);
