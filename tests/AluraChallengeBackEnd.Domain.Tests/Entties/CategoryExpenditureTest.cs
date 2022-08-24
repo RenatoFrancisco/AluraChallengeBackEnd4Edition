@@ -1,4 +1,4 @@
-namespace AluraChallengeBackEnd.Domain.Tests;
+namespace AluraChallengeBackEnd.Domain.Tests.Entities;
 
 public class CategoryExpenditureTest
 {
