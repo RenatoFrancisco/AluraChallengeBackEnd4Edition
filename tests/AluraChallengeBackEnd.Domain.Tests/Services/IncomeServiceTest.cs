@@ -63,15 +63,12 @@ public class IncomeServiceTest
     [Fact]
     public async void EditAsync_ValidIncome_MustEdit()   
     {
-        // Arrange
-        var validIncome = new Income("Salary", 1300.0m, DateTime.Now);
-
-        // Act
-        var result = await _incomeService.EditAsync(validIncome);
+        // Arrange & Act
+        var result = await _incomeService.EditAsync(_validIncome);
 
         // Assert
         Assert.True(result);
-        _incomeRepository.Verify(i => i.Edit(validIncome), Times.Once);
+        _incomeRepository.Verify(i => i.Edit(_validIncome), Times.Once);
         _incomeRepository.Verify(i => i.UnitOfWork.CommitAsync(), Times.Once);
         _notifier.Verify(n => n.Handle(It.IsAny<Notification>()), Times.Never);
     }
