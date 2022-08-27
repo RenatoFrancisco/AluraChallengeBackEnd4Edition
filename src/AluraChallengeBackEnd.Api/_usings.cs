@@ -11,4 +11,5 @@ global using Microsoft.AspNetCore.Mvc.ModelBinding;
 global using AluraChallengeBackEnd.Domain.Services;
 global using AluraChallengeBackEnd.Data.Repositories;
 global using AluraChallengeBackEnd.Domain.Interfaces;
+global using AluraChallengeBackEnd.Api.Configurations;
 global using AluraChallengeBackEnd.Domain.Notifications;
