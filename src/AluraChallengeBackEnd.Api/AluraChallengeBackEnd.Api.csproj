@@ -22,4 +22,8 @@
     <ProjectReference Include="..\AluraChallengeBackEnd.Core\AluraChallengeBackEnd.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+     <InternalsVisibleTo Include="..\..\tests\AluraChallengeBackEnd.Api.Tests\AluraChallengeBackEnd.Api.Tests.csproj" />
+  </ItemGroup>
+
 </Project>
