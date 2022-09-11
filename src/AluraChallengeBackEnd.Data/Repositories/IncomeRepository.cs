@@ -8,7 +8,7 @@ public class IncomeRepository : Repository<Income>, IIncomeRepository
         await FindAsync(i => i.Description == description && i.DateIncome.Month == month);
 
     public async Task<Income> GetByDescriptionAsync(string description) =>
-        (await FindAsync(i => i.Description ==  description)).FirstOrDefault();
+        (await FindAsync(i => i.Description == description)).FirstOrDefault();
 
     public async Task<IEnumerable<Income>> GetByYearAndMonthAsync(int year, int month) =>
         await FindAsync(i => i.DateIncome.Year == year && i.DateIncome.Month == month);
