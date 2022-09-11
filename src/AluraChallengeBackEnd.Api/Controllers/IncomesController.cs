@@ -44,7 +44,7 @@ public class IncomesController : MainController
         CustomResponse(_mapper.Map<IEnumerable<IncomeViewModel>>(await _incomeRepository.GetByYearAndMonthAsync(year, month)));
 
     [HttpPost]
-    public async Task<ActionResult<IncomeViewModel>> Save(IncomeViewModel incomeViewModel)
+    public async Task<ActionResult<IncomeViewModel>> Create(IncomeViewModel incomeViewModel)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
         
