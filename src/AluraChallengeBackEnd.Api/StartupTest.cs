@@ -13,6 +13,13 @@ public class StartupTest
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+        services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        services.AddDbContext<AppDbContext>((provider, options) => 
+        options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddEndpointsApiExplorer();
+        services.ResolveDependencies();
     }
 
     public void Configure(WebApplication app, IWebHostEnvironment environment)
@@ -23,5 +30,6 @@ public class StartupTest
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+        app.Run();
     }
 }
