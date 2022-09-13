@@ -61,7 +61,37 @@ public class IncomesControllerTest : IClassFixture<WebApplicationFactory<Program
     public async Task GetByYearAndMonth_WhenExists_MustReturn200()
     {
         // Arrange & Act
-        var response =  await _client.GetAsync($"api/incomes/{_validIncome.DateIncome.Year}/{_validIncome.DateIncome.Month}");
+        var response = await _client.GetAsync($"api/incomes/{_validIncome.DateIncome.Year}/{_validIncome.DateIncome.Month}");
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact, TestPriority(6)]
+    public async Task Get_WhentExists_MustReturn200()
+    {
+        // Arrange & Act
+        var response = await _client.GetAsync($"api/incomes/{_validIncome.Id}");
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact, TestPriority(7)]
+    public async Task Edit_WhenIdsMatchs_MustReturn200()
+    {
+        // Arrange & Act
+        var response = await _client.PutAsJsonAsync($"api/incomes/{_validIncome.Id}", _validIncome);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact, TestPriority(99)]
+    public async Task Delete_WhenIdtExists_MustReturn200()
+    {
+        // Arrange & Act
+        var response = await _client.DeleteAsync($"api/incomes/{_validIncome.Id}");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -71,12 +101,13 @@ public class IncomesControllerTest : IClassFixture<WebApplicationFactory<Program
     public async Task GetByYearAndMonth_WhenDoestNotExist_MustReturn200()
     {
         // Arrange & Act
-        var response =  await _client.GetAsync($"api/incomes/2100/1");
+        var response = await _client.GetAsync($"api/incomes/2100/1");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
+    [Fact]
     public async Task GetAll_WhenDescriptionIsNull_MustReturn200()
     {
         // Arrange & Act
@@ -90,10 +121,20 @@ public class IncomesControllerTest : IClassFixture<WebApplicationFactory<Program
     public async Task Get_WhenIdDoesNotExist_MustReturn404()
     {
         // Arrange & Act
-        var response =  await _client.GetAsync("api/incomes/c36bfa05-9724-449c-b4bc-5ae322b55e71");
+        var response = await _client.GetAsync("api/incomes/c36bfa05-9724-449c-b4bc-5ae322b55e71");
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Edit_WhenIdsDoesNotMatch_MustReturn400()
+    {
+        // Arrange & Act
+        var response = await _client.PutAsJsonAsync("api/incomes/c36bfa05-9724-449c-b4bc-5ae322b55e71", _validIncome);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
     [Fact]
@@ -106,7 +147,7 @@ public class IncomesControllerTest : IClassFixture<WebApplicationFactory<Program
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    private Guid ExtractGuid(string result)
+    private Guid ExtractId(string result)
     {
         var idPosition = result.IndexOf("\"id\":");
 		var id = result.Substring(idPosition + 6, 36);
