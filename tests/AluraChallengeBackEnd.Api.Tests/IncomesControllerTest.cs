@@ -32,7 +32,6 @@ public class IncomesControllerTest : IClassFixture<WebApplicationFactory<Program
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        Console.WriteLine(await response.Content.ReadAsStringAsync());
         Assert.Contains("\"success\":true", await response.Content.ReadAsStringAsync());
     }
 
@@ -70,18 +69,12 @@ public class IncomesControllerTest : IClassFixture<WebApplicationFactory<Program
     [Fact, TestPriority(6)]
     public async Task Get_WhentExists_MustReturn200()
     {
-        // Arrange & Act
-        var response = await _client.GetAsync($"api/incomes/{_validIncome.Id}");
+        // Arrange 
+        var response = await _client.GetAsync($"api/incomes?description={_validIncome.Description}");
+        var id = ExtractId(await response.Content.ReadAsStringAsync());
 
-        // Assert
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    }
-
-    [Fact, TestPriority(7)]
-    public async Task Edit_WhenIdsMatchs_MustReturn200()
-    {
-        // Arrange & Act
-        var response = await _client.PutAsJsonAsync($"api/incomes/{_validIncome.Id}", _validIncome);
+        // Act
+        response = await _client.GetAsync($"api/incomes/{id}");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -90,8 +83,12 @@ public class IncomesControllerTest : IClassFixture<WebApplicationFactory<Program
     [Fact, TestPriority(99)]
     public async Task Delete_WhenIdtExists_MustReturn200()
     {
-        // Arrange & Act
-        var response = await _client.DeleteAsync($"api/incomes/{_validIncome.Id}");
+        // Arrange 
+        var response = await _client.GetAsync($"api/incomes?description={_validIncome.Description}");
+        var id = ExtractId(await response.Content.ReadAsStringAsync());
+
+        // Act
+        response = await _client.DeleteAsync($"api/incomes/{id}");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
