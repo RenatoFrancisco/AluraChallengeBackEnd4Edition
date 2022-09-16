@@ -1,13 +1,13 @@
 ﻿namespace AluraChallengeBackEnd.Api.Tests;
 
 [TestCaseOrderer("AluraChallengeBackEnd.Api.Tests.Attributes.PriorityOrderer", "AluraChallengeBackEnd.Api.Tests")]
-public class IncomesControllerTest : IClassFixture<WebApplicationFactory<Program>>
+public class IncomesControllerTest : IClassFixture<WebApplicationFactory<StartupTest>>
 {
-    private readonly WebApplicationFactory<Program> _factory;
+    private readonly WebApplicationFactory<StartupTest> _factory;
     private readonly HttpClient _client;
     private readonly Income _validIncome;
 
-    public IncomesControllerTest(WebApplicationFactory<Program> factory)
+    public IncomesControllerTest(WebApplicationFactory<StartupTest> factory)
     {
         _factory = factory;
         _client = _factory.CreateClient();
